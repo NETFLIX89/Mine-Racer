@@ -1,0 +1,197 @@
+getgenv().SecureMode = true
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/UI-Interface/CustomFIeld/main/RayField.lua'))()
+
+
+local Window = Rayfield:CreateWindow({
+	Name = "Mine Racer by Lol123#0030",
+	LoadingTitle = "Mine Racer",
+	LoadingSubtitle = "Lol123#0030",
+	ConfigurationSaving = {
+		Enabled = true,
+		FolderName = Farming, -- Create a custom folder for your hub/game
+		FileName = ""
+	},
+        Discord = {
+        	Enabled = false,
+        	Invite = "", -- The Discord invite code, do not include discord.gg/
+        	RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+        },
+	
+})
+local Tab = Window:CreateTab("Main", 4483362458)
+local Section = Tab:CreateSection("Main")
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Mine",
+	CurrentValue = false,
+	Flag = "Auto Click", 
+	Callback = function(Value)
+		getgenv().autoTap = Value
+        if Value then
+        doTap()
+	end
+end
+})
+
+function doTap()
+    spawn(function()
+        while getgenv().autoTap == true do
+			local args = {
+				[1] = "Mine"
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.mineEvent:FireServer(unpack(args))
+            wait()
+        end 
+    end)
+end
+
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Join",
+	CurrentValue = false,
+	Flag = "Auto Join", 
+	Callback = function(Value)
+		getgenv().autoJoin = Value
+        if Value then
+        autoJoin()
+	end
+end
+})
+
+function autoJoin()
+    spawn(function()
+        while getgenv().autoJoin == true do
+			local args = {
+				[1] = "Join"
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.joinEvent:FireServer(unpack(args))
+            wait()
+        end 
+    end)
+end
+
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Rebirth",
+	CurrentValue = false,
+	Flag = "Auto Rebirth", 
+	Callback = function(Value)
+		getgenv().autoRebirth = Value
+        if Value then
+		autoRebirth()
+	end
+end
+})
+
+function autoRebirth()
+    spawn(function()
+        while getgenv().autoRebirth == true do
+			local args = {
+				[1] = "Rebirth"
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.rebirthEvent:FireServer(unpack(args))
+            wait()
+        end 
+    end)
+end
+
+local Section = Tab:CreateSection("Upgrades")
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Upgrade Dig",
+	CurrentValue = false,
+	Flag = "Auto upgrade", 
+	Callback = function(Value)
+		getgenv().autoUpgrade = Value
+        if Value then
+		autoUpgrade()
+	end
+end
+})
+
+function autoUpgrade()
+    spawn(function()
+        while getgenv().autoUpgrade == true do
+			local args = {
+				[1] = "Dig"
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.upgradeEvent:FireServer(unpack(args))
+            wait()
+        end 
+    end)
+end
+
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Upgrade Coolddown",
+	CurrentValue = false,
+	Flag = "Auto upgrade2", 
+	Callback = function(Value)
+		getgenv().autoUpgrade2 = Value
+        if Value then
+		autoUpgrade2()
+	end
+end
+})
+
+function autoUpgrade2()
+    spawn(function()
+        while getgenv().autoUpgrade2 == true do
+			local args = {
+				[1] = "Cooldown"
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.upgradeEvent:FireServer(unpack(args))
+            wait()
+        end 
+    end)
+end
+
+local Tab = Window:CreateTab("Eggs", 4483362458)
+local Section = Tab:CreateSection("Eggs")
+
+local eggtable = {}
+
+for i,v in ipairs(game:GetService("Workspace").Eggs:GetChildren()) do
+	if not v.Name:match("-") then
+		table.insert(eggtable,v.Name)
+	end
+end
+
+
+local eggtoopen = "iagree"
+Tab:CreateDropdown({
+    Name = "Egg to Open",
+    Options = eggtable,
+    CurrentOption = "",
+    Flag = "Egg to open",
+    Callback = function(Option)
+        eggtoopen = Option
+    end,
+})
+
+local Toggle = Tab:CreateToggle({
+	Name = "Auto Open Egg x1",
+	CurrentValue = false,
+	Flag = "Auto Egg", 
+	Callback = function(Value)
+        getgenv().buyegg2 = Value
+        if Value then
+            buyegg2(eggtoopen)
+        end
+	end
+})
+
+function buyegg2(v)
+    spawn(function()
+        while wait() and getgenv().buyegg2 do 
+			local args = {
+				[1] = "Open",
+				[2] = workspace.Eggs:FindFirstChild(v)
+			}
+			
+			game:GetService("ReplicatedStorage").Remotes.requestEgg:FireServer(unpack(args))
+            wait()    
+        end
+    end)
+end
+
